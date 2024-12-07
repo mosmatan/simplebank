@@ -17,8 +17,11 @@ var testDB *sql.DB
 
 // TestMain function is used to setup the test environment
 func TestMain(m *testing.M) {
-	var err error
-	testDB, err = sql.Open("postgres", "postgresql://root:secret@localhost:5432/bank?sslmode=disable")
+	config, err := utils.LoadConfig("../..")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+	testDB, err = sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
