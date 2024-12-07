@@ -151,7 +151,6 @@ func TestTransferTxDaedLock(t *testing.T) {
 			fmt.Println("error", err)
 		case result := <-results:
 			require.NotEmpty(t, result)
-			fmt.Println("result", result)
 		}
 	}
 

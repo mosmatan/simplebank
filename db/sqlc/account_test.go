@@ -7,7 +7,7 @@ import (
 	"github.com/mosmatan/simplebank/utils"
 )
 
-func TestQueries_CreateAccount(t *testing.T) {
+func TestCreateAccount(t *testing.T) {
 	arg := CreateAccountParams{
 		Owner:    utils.RandomName(),
 		Balance:  utils.RandomBalance(),
@@ -31,7 +31,7 @@ func TestQueries_CreateAccount(t *testing.T) {
 	}
 }
 
-func TestQueries_GetAccount(t *testing.T) {
+func TestGetAccount(t *testing.T) {
 	createAccount := CreateAccountParams{
 		Owner:    utils.RandomName(),
 		Balance:  utils.RandomBalance(),
@@ -59,7 +59,7 @@ func TestQueries_GetAccount(t *testing.T) {
 	}
 }
 
-func TestQueries_UpdateAccount(t *testing.T) {
+func TestUpdateAccount(t *testing.T) {
 	createAccount := CreateAccountParams{
 		Owner:    utils.RandomName(),
 		Balance:  utils.RandomBalance(),
@@ -91,7 +91,7 @@ func TestQueries_UpdateAccount(t *testing.T) {
 	}
 }
 
-func TestQueries_ListAccounts(t *testing.T) {
+func TestListAccounts(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		arg := CreateAccountParams{
 			Owner:    utils.RandomName(),
@@ -121,7 +121,7 @@ func TestQueries_ListAccounts(t *testing.T) {
 	}
 }
 
-func TestQueries_DeleteAccount(t *testing.T) {
+func TestDeleteAccount(t *testing.T) {
 	createAccount := CreateAccountParams{
 		Owner:    utils.RandomName(),
 		Balance:  utils.RandomBalance(),
