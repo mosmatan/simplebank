@@ -8,7 +8,12 @@ import (
 
 var txKey = struct{}{}
 
-type Store struct {
+type Store interface {
+	Querier
+	TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error)
+}
+
+type SqlStore struct {
 	*Queries
 	db *sql.DB
 }
@@ -28,14 +33,14 @@ type TransferTxResult struct {
 }
 
 // NewStore creates a new Store
-func NewStore(db *sql.DB) *Store {
-	return &Store{
+func NewStore(db *sql.DB) Store {
+	return &SqlStore{
 		db:      db,
 		Queries: New(db),
 	}
 }
 
-func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
+func (store *SqlStore) execTx(ctx context.Context, fn func(*Queries) error) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
@@ -54,7 +59,7 @@ func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 	return tx.Commit()
 }
 
-func (store *Store) TransferTx(ctx context.Context, params TransferTxParams) (TransferTxResult, error) {
+func (store *SqlStore) TransferTx(ctx context.Context, params TransferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {
@@ -86,7 +91,7 @@ func (store *Store) TransferTx(ctx context.Context, params TransferTxParams) (Tr
 	return result, err
 }
 
-func (store *Store) transferBalance(ctx context.Context, fromAccountID int64, toAccountID int64, amount int64) (from Account, to Account, err error) {
+func (store *SqlStore) transferBalance(ctx context.Context, fromAccountID int64, toAccountID int64, amount int64) (from Account, to Account, err error) {
 	if fromAccountID < toAccountID {
 		from, err = store.AddAccountBalance(ctx, AddAccountBalanceParams{
 			ID:     fromAccountID,
@@ -120,7 +125,7 @@ func (store *Store) transferBalance(ctx context.Context, fromAccountID int64, to
 	return
 }
 
-func (store *Store) craeteTransferEntires(ctx context.Context, fromAccountID, toAccountID, amount int64) (from Entry, to Entry, err error) {
+func (store *SqlStore) craeteTransferEntires(ctx context.Context, fromAccountID, toAccountID, amount int64) (from Entry, to Entry, err error) {
 	from, err = store.CreateEntry(ctx, CreateEntryParams{
 		OwnerID: fromAccountID,
 		Amount:  -amount,
