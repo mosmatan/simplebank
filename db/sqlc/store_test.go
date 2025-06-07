@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-/*func TestTransferTx(t *testing.T) {
+func TestTransferTx(t *testing.T) {
 	store := NewStore(testDB)
 
 	account1 := createRandomAccount(t)
@@ -94,7 +94,7 @@ import (
 			fmt.Println("from account ", fromAccount.Balance, "\nto account ", toAccount.Balance)
 		}
 	}
-}*/
+}
 
 func TestTransferTxDaedLock(t *testing.T) {
 	store := NewStore(testDB)
