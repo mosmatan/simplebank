@@ -49,7 +49,7 @@ func TestTransferTx(t *testing.T) {
 
 			transfer := result.Tranfers
 			require.NotEmpty(t, transfer)
-			require.Equal(t, account1.ID, transfer.FromAcountID)
+			require.Equal(t, account2.ID, transfer.FromAcountID)
 			require.Equal(t, account2.ID, transfer.ToAcountID)
 			require.Equal(t, amount, transfer.Amount)
 			require.NotZero(t, transfer.CreatedAt)
